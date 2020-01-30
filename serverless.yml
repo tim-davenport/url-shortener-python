@@ -35,7 +35,7 @@ provider:
     - Effect: "Allow"
       Action:
         - "dynamodb:PutItem"
-      Resource: { "Fn::Join" : [":", ["arn:aws:dynamodb:${self:provider.region}", { "Ref" : "AWS::AccountId" }, "linksTable" ] ]  }
+      Resource: { "Fn::Join" : [":", ["arn:aws:dynamodb:${self:provider.region}", { "Ref" : "AWS::AccountId" }, "table/linksTable" ] ]  }
 #    - Effect: "Allow"
 #      Action:
 #        - "s3:PutObject"
@@ -60,17 +60,18 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
+  post:
+    handler: handler.post
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
     environment:
-      DYNAMODB_ARN: { "Fn::Join" : [":", ["arn:aws:dynamodb:${self:provider.region}", { "Ref" : "AWS::AccountId" }, "linksTable" ] ]  }
+      #DYNAMODB_ARN: { "Fn::Join" : [":", ["arn:aws:dynamodb:${self:provider.region}", { "Ref" : "AWS::AccountId" }, "linksTable" ] ]  }
+      DYNAMODB_TABLE: linksTable
     events:
       - http:
-          path: hello
-          method: get
+          path: api
+          method: post
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
@@ -112,10 +113,10 @@ resources:
       Properties:
         TableName: linksTable
         AttributeDefinitions:
-          - AttributeName: link
+          - AttributeName: code
             AttributeType: S
         KeySchema:
-          - AttributeName: link
+          - AttributeName: code
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
