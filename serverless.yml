@@ -59,6 +59,13 @@ provider:
 #    - exclude-me.py
 #    - exclude-me-dir/**
 
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
+
 functions:
   post:
     handler: handler.post
