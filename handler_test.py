@@ -25,6 +25,7 @@ class HandlerTest(unittest.TestCase):
     def test_get_returns_302(self, mock_boto3, mock_os):
         response = get({'queryStringParameters':{'code':'abcdef'}}, None)
         self.assertTrue(response['statusCode'], 302)
+        self.assertIsNotNone(response['headers']['Location'])
 
     def test_get_returns_400_without_code_query_string(self):
         response = get({'queryStringParameters':{}}, None)
