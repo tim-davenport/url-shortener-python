@@ -19,6 +19,8 @@ var/
 /node_modules
 .vscode
 package-lock.json
+/.pytest_cache
+/__pycache__
 
 # Serverless directories
 .serverless
